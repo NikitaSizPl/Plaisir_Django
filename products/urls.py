@@ -1,11 +1,10 @@
 from django.urls import path
 
-from .views import categories, categories_id, item, item_id
+from .views import categories, items_categor, item_id
 
 urlpatterns = [
 
-    path("categories/", categories, name="categories"),
-    path('categories/<int:cat_id>/', categories_id, name='categories_id'),
-    path("item/", item, name="item"),
-    path('item/<int:id>', item_id, name='item_id')
+    path("", categories, name="categories"),
+    path("categories/<str:cat_name>/items", items_categor, name="items_categor"),
+    path('item/<str:item_str>', item_id, name='item_id')
 ]
