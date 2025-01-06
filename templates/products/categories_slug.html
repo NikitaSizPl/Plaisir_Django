@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{cat|capfirst}}
+{% endblock %}
+
+
+{% block content %}
+
+<p>Категория: {{cat|capfirst}}  </p>
+    <p>Ассортимент:</p>
+    {% for it in items %}
+        <li><a href="{% url 'item_id' it %}">{{ it|capfirst }}</a></li>
+    {% endfor %}
+<br>
+<a href="{% url 'categories'%}">Назад</a>
+{% endblock %}

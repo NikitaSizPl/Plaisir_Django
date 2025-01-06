@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}
+Plaisir
+{% endblock%}
+
+{% block content %}
+
+{% for categorii in categor %}
+    <li><a href="{% url 'items_categor' categorii.name %}">{{ categorii.name|capfirst }}</a></li>
+{% endfor %}
+{% endblock %}
