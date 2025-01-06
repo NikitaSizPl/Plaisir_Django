@@ -1,28 +1,31 @@
-from django.http import HttpResponse
 from .models import Catigories, Item
+from django.shortcuts import render
 
 
-def index(request):
-    return HttpResponse("index")
+# def index(request):
+# return HttpResponse("index")
 
 
 def categories(request):
-    get_cat = Catigories.objects.all()
-    cat_names = ', '.join([cat.name for cat in get_cat])
-    return HttpResponse(f"Categories: {cat_names}")
+    categor = Catigories.objects.all()
+    return render(request,
+                  "products/categories.html",
+                  {"categor": categor}
+                  )
 
 
-def categories_id(request, cat_id):
-    response = "You're looking at the results of question %s."
-    return HttpResponse(response % cat_id)
+def items_categor(request, cat_name):
+    cat = Catigories.objects.get(name=cat_name)
+    items = Item.objects.filter(categories__name=cat_name)
+    return render(request,
+                  "products/categories_slug.html",
+                  {"items": items, "cat": cat}
+                  )
 
 
-def item(request):
-    get_item = Item.objects.all()
-    item_names = ', '.join([item.name for item in get_item])
-    return HttpResponse(f"Items: {item_names}")
-
-
-def item_id(request, id):
-    response = "You're looking at the results of item %s."
-    return HttpResponse(response % id)
+def item_id(request, item_str):
+    item = Item.objects.get(name=item_str)
+    return render(request,
+                  "products/item_id.html",
+                  {'item': item}
+                  )
