@@ -1,12 +1,18 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import User
+from basket.models import Basket
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+
 
 # Create your views here.
+def profile(request, username):
+    user = User.objects.get(name=username)
+    orders = Basket.objects.filter(user__name=username)
 
-def get_users(request):
-    users = User.objects.all()
     context = {
-        "users": users
+        "user": user,
+        "orders": orders
     }
     return render(request, 'user/profile.html', context)
 
