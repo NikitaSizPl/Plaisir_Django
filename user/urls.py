@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import profil
+from .views import profile, login_user, creat_user
 
 
 urlpatterns = [
@@ -7,5 +7,4 @@ urlpatterns = [
     path('creat', creat_user, name='creat'),
     path('user/<str:username>', profile, name='profile')
 
-    path('profile', profil, name="profil")
 ]
