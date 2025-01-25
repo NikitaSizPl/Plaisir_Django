@@ -7,12 +7,13 @@ Profile user
 
 {% block content %}
 
-<p>Имя пользователя</p>
-<p>instagram</p>
-<p>Телефон</p>
-<p>Адресс</p>
-<p>Все заказы</p>
-
-
-<a href="{% url 'categories'%}">Назад</a>
+    <h3>Welcom to profile {{ user.name }}</h3>
+    <p>Имя пользователя: {{ user.name }}</p>
+    <p>instagram: {{ user.name }}</p>
+    <p>Телефон</p>
+    <p>Адресс</p>
+    <h3>Заказы:</h3>
+    {% for order in orders %}
+    {{ order }}
+    {% endfor %}
 {% endblock %}
