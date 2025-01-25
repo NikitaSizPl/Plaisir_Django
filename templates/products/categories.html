@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}
 Plaisir
@@ -7,6 +8,14 @@ Plaisir
 {% block content %}
 
 {% for categorii in categor %}
-    <li><a href="{% url 'items_categor' categorii.name %}">{{ categorii.name|capfirst }}</a></li>
+    <div class="categor-list">
+        <img src="{% static 'media/no_images.png' %}" alt="My image" width="200" height="150">
+        <div class="categor-info">
+            <h3><a href="{% url 'items_categor' categorii.name %}">{{ categorii.name|capfirst }}</a></h3>
+            <br>
+            <a href="{% url 'items_categor' categorii.name %}" class="button">szczegółowo</a>
+        </div>
+    </div>
+    <br>
 {% endfor %}
 {% endblock %}
