@@ -6,10 +6,17 @@ class User(models.Model):
     name = models.CharField(max_length=50,
                             verbose_name='Имя покупателя'
                             )
-    instagram = models.CharField(max_length=50,
-                                 verbose_name='Instagram покупателя'
-                                 )
-    phone = models.IntegerField(blank=True,
+    password = models.CharField(max_length=50,
+                                verbose_name='Пароль покупателя'
+                                )
+    instagram = models.CharField(
+        blank=True,
+        max_length=50,
+        verbose_name='Instagram покупателя'
+    )
+    phone = models.IntegerField(
+                                null=True,
+                                blank=True,
                                 verbose_name='Номер покупателя'
                                 )
     adress = models.CharField(max_length=100,
