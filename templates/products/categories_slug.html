@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}
 {{cat|capfirst}}
@@ -7,11 +8,16 @@
 
 {% block content %}
 
-<p>Категория: {{cat|capfirst}}  </p>
-    <p>Ассортимент:</p>
-    {% for it in items %}
-        <li><a href="{% url 'item_id' it %}">{{ it|capfirst }}</a></li>
-    {% endfor %}
+{% for item in items %}
+
+    <div class="items-list">
+        <img src="{% static 'media/no_images.png' %}" alt="My image" width="200" height="150">
+        <div class="items-info">
+            <h3><a href="{% url 'item_id' item.id %}">{{ item|capfirst }}</a></h3>
+        </div>
+       <a>Добавить в корзину</a>
+    </div>
+{% endfor %}
 <br>
 <a href="{% url 'categories'%}">Назад</a>
 {% endblock %}
