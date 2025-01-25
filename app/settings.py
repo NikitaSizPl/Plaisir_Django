@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'products',
     'basket',
     'user',
+    'orders'
 ]
 
 MIDDLEWARE = [
@@ -120,7 +121,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+# URL для статики
 STATIC_URL = '/static/'
+# Папка со статическими файлами
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
