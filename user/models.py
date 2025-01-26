@@ -1,34 +1,28 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
 # Create your models here.
-class User(models.Model):
-    name = models.CharField(max_length=50,
-                            verbose_name='Имя покупателя'
-                            )
-    password = models.CharField(max_length=50,
-                                verbose_name='Пароль покупателя'
-                                )
+class User(AbstractUser):
     instagram = models.CharField(
+        null=True,
         blank=True,
         max_length=50,
         verbose_name='Instagram покупателя'
     )
-    phone = models.IntegerField(
-                                null=True,
-                                blank=True,
-                                verbose_name='Номер покупателя'
-                                )
-    adress = models.CharField(max_length=100,
-                              blank=True,
-                              verbose_name='Адрес покупателя'
-                              )
-    creat_at = models.DateTimeField(auto_now_add=True,
-                                    verbose_name='Дата создания'
-                                    )
+    phone = models.CharField(
+        max_length=20,
+        null=True,
+        blank=True,
+        verbose_name='Номер покупателя'
+        )
+    creat_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Дата создания'
+        )
 
     def __str__(self):
-        return self.name
+        return self.username
 
     class Meta:
         verbose_name = 'Пользователь'
