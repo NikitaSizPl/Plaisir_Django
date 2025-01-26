@@ -3,8 +3,7 @@ from .models import User
 
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('name', 'instagram',
-                    'phone', 'adress')
+    list_display = ('username', 'instagram', 'phone')
 
 
 # Register your models here.
