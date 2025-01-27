@@ -14,11 +14,11 @@ def categories(request):
 
 
 def items_categor(request, cat_name):
-    cat = Catigories.objects.get(name=cat_name)
-    items = Item.objects.filter(categories__name=cat_name)
+    categor = Catigories.objects.get(name=cat_name)
+    products = Item.objects.filter(categories__name=cat_name)
     context = {
-        'items' : items,
-        'cat': cat
+        'products' : products,
+        'categor': categor
     }
     return render(request,
                   "products/categories_slug.html",
@@ -26,10 +26,10 @@ def items_categor(request, cat_name):
                   )
 
 
-def item_id(request, item_str):
-    item = Item.objects.get(name=item_str)
+def item_id(request, item_id):
+    product = Item.objects.get(id=item_id)
     context = {
-        'item': item
+        'product': product
     }
     return render(request,
                   "products/item_id.html",
@@ -38,25 +38,13 @@ def item_id(request, item_str):
 
 
 def index(request):
+    items = Item.objects.all()
+    categor = Catigories.objects.all()
+    context = {
+        'items': items,
+        'categor': categor
+    }
     return render(request,
-                  'products/index.html'
-                  )
-def delivery(request):
-    return render(request,
-                  'add/delivery.html'
-                  )
-
-def delivery(request):
-    return render(request,
-                  'products/delivery.html'
-                  )
-
-def infopay(request):
-    return render(request,
-                  'products/infopay.html'
-                  )
-
-def contact(request):
-    return render(request,
-                  'products/contact.html'
+                  'products/index.html',
+                  context
                   )
