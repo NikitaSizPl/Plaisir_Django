@@ -6,6 +6,10 @@ class Catigories(models.Model):
     name = models.CharField(max_length=100,
                             verbose_name='Название'
                             )
+    description = models.CharField(max_length=255,
+                                   blank=True,
+                                   verbose_name='Описание',
+                                   )
     image_id = models.IntegerField(null=True,
                                    blank=True,
                                    verbose_name='Изображение'
@@ -20,7 +24,7 @@ class Catigories(models.Model):
 
 
 # Модель товара
-class Item(models.Model):
+class Product(models.Model):
     name = models.CharField(max_length=100,
                             null=True,
                             verbose_name='Название'
