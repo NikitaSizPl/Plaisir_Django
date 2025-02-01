@@ -1,46 +1,56 @@
 from django.shortcuts import render, redirect
-from .models import User
-from basket.models import Basket
-from django.contrib.auth import authenticate, login
-from django.contrib import messages
+from user.forms import UserLoginForm, UserRegisterForm, UserProfilerForm
+from django.contrib import auth, messages
 
 
 # Create your views here.
-def profile(request, username):
-    user = User.objects.get(name=username)
-    orders = Basket.objects.filter(user__name=username)
-
+def profile(request):
+    user = request.user
+    if request.method == 'POST':
+        form = UserProfilerForm(instance=user, data=request.POST)
+        if form.is_valid():
+            form.save()
     context = {
         "user": user,
-        "orders": orders
     }
     return render(request, 'user/profile.html', context)
 
 
-def login_user(request):
+def login(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, name=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('index')
-        else:
-            messages.error(request, "Неверное имя пользователя или пароль")
-            return profile(request, username)
+        form = UserLoginForm(data=request.POST)
+        if form.is_valid():
+            username = request.POST['username']
+            password = request.POST['password']
+            user = auth.authenticate(username=username, password=password)
+            if user is not None:
+                auth.login(request, user)
+                return redirect('user:profile')
+            else:
+                messages.error(request, "Неверное имя пользователя или пароль")
+                return redirect('user:login')
     else:
-        return render(request, 'user/login.html')
+        form = UserLoginForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'user/login.html', context)
 
-def creat_user(request):
+
+def register(request):
     if request.method == "POST":
-        username = request.POST['username']
-        password = request.POST['password']
-        if User.objects.filter(name=username).exists():
-            messages.error(request, f'{username} - уже зарегистрирован')
-            return redirect('creat')
-        user = User.objects.create(name=username, password=password)
-        user.save()
-        return redirect('index')
-    return render(request, 'user/creat.html')
+        form = UserRegisterForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('user:login')
+    else:
+        form = UserRegisterForm()
+    context = {
+        "form": form
+    }
+    return render(request, 'user/register.html', context)
 
 
+def logout(request):
+    auth.logout(request)
+    return render(request, 'products/index.html')
