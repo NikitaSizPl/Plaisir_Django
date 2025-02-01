@@ -8,16 +8,13 @@
 
 {% block content %}
 
-{% for item in items %}
-
+{% for product in products %}
     <div class="items-list">
         <img src="{% static 'media/no_images.png' %}" alt="My image" width="200" height="150">
         <div class="items-info">
-            <h3><a href="{% url 'item_id' item.id %}">{{ item|capfirst }}</a></h3>
+            <h3><a href="{% url 'products:item_id' product.id %}">{{ product|capfirst }}</a></h3>
         </div>
-       <a>Добавить в корзину</a>
+       <a href="{% url 'basket:add_to_basket' product.id %}">Добавить в корзину</a>
     </div>
 {% endfor %}
-<br>
-<a href="{% url 'categories'%}">Назад</a>
 {% endblock %}

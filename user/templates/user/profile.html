@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}
+Profile user
+{% endblock %}
+
+
+{% block content %}
+{% csrf_token %}
+
+    <h3>Профиль</h3>
+    <div>
+        <p>Имя пользователя: {{ user.username }}</p>
+    </div>
+    <div>
+        <p>instagram: {{ user.instagram }}</p>
+    </div>
+    <div>
+        <p>Телефон: {{user.phone}}</p>
+    </div>
+    <a href="{% url 'user:logout' %}">Выйти из аккаунта</a>
+    <div>
+        <h3>Заказы:</h3>
+    </div>
+
+
+
+{% endblock %}
