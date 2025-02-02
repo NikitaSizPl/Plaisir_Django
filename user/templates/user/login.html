@@ -2,22 +2,19 @@
 {% load static %}
 
 {% block title %}
-Авторизация
+Login
 {% endblock %}
 
 {% block content %}
-
-<div class="main" id="main">
-    <div><h2>Авторизация</h2></div>
-    <div>
-        <div id="content-main">
+<div class="container-login">
+    <div class="container-form">
+        <h2>Авторизация</h2>
             <form action="{% url 'user:login' %}" method="POST">
             {% csrf_token %}
-                <div>{{form.as_p}}</div>
+                <div class="forms">{{form.as_p}}</div>
+                <button type="submit">Авторизоваться</button>
                 <a href="{% url 'user:register' %}">Зарегистрироваться</a>
-                <input type="submit" value="Авторизоваться">
             </form>
-        </div>
     </div>
 </div>
 
