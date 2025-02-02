@@ -53,4 +53,4 @@ def register(request):
 
 def logout(request):
     auth.logout(request)
-    return render(request, 'products/index.html')
+    return redirect('products:index')
