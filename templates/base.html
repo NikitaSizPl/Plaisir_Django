@@ -10,10 +10,16 @@
     </title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/categories.css' %}">
+    <link rel="stylesheet" href="{% static 'css/categories_slug.css' %}">
+    <link rel="stylesheet" href="{% static 'css/item_id.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
 </head>
 
 <header>
     <div class="navbar">
+<!--        <img src="{% static 'media/logo_done.png' %}" width="170" height="90">-->
         <ul class="nav-links">
                 <li><a href="/">STRONA GLÓWNA</a></li>
                 <li><a href="{% url 'products:categories' %}">KATALOG</a></li>
@@ -32,7 +38,6 @@
     </div>
 
 </header>
-<br>
 <body>
 {% block content %}
 
