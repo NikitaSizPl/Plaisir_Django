@@ -26,19 +26,20 @@ def basket_base(request):
 def add_to_basket(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     basket, create = Basket.objects.get_or_create(user=request.user)
-    basket_item, create = BasketItem.objects.get_or_create(basket=basket, product=product, quantity=1)
-    if not create:
-        if product in basket_item:
-            basket_item.quantity += 1
-            basket_item.save()
+    basket_item = BasketItem.objects.filter(basket=basket, product=product).first()
+    if basket_item:
+        basket_item.quantity += 1
+        basket_item.save()
+    else:
+        BasketItem.objects.get_or_create(basket=basket, product=product, quantity=1)
     return redirect('basket:basket')
 
 
 def del_from_basket(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     basket, create = Basket.objects.get_or_create(user=request.user)
-    basket_item, create = BasketItem.objects.get_or_create(basket=basket, product=product)
-    if not create:
+    basket_item = BasketItem.objects.filter(basket=basket, product=product).first()
+    if basket_item:
         basket_item.quantity -= 1
         basket_item.save()
     return redirect('basket:basket')
