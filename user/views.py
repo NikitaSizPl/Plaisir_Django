@@ -1,9 +1,11 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from user.forms import UserLoginForm, UserRegisterForm, UserProfilerForm
 from django.contrib import auth, messages
 
 
 # Create your views here.
+@login_required
 def profile(request):
     user = request.user
     if request.method == 'POST':
@@ -28,13 +30,13 @@ def login(request):
                 return redirect('user:profile')
             else:
                 messages.error(request, "Неверное имя пользователя или пароль")
-                return redirect('user:login')
+                return redirect('user:profile')
     else:
         form = UserLoginForm()
     context = {
         'form': form
     }
-    return render(request, 'user/login.html', context)
+    return render(request, 'user/profile.html', context)
 
 
 def register(request):
@@ -42,7 +44,7 @@ def register(request):
         form = UserRegisterForm(data=request.POST)
         if form.is_valid():
             form.save()
-            return redirect('user:login')
+            return redirect('user:profile')
     else:
         form = UserRegisterForm()
     context = {
