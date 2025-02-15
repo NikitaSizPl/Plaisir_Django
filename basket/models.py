@@ -9,11 +9,11 @@ class Basket(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
+        related_name='baskets',
         verbose_name='Покупатель',
         null=True,
         blank=True
     )
-
     created_at = models.DateTimeField(
         default=timezone.now,
         verbose_name='Дата создания'
@@ -32,12 +32,16 @@ class Basket(models.Model):
     def total_price(self):
         return sum(item.total_price for item in self.product.all())
 
+    @property
+    def total_quantity(self):
+        return sum(item.total_quantity for item in self.quantity.all())
+
     class Meta:
         verbose_name = 'Корзина'
         verbose_name_plural = 'Корзины'
 
     def __str__(self):
-        return f"Создан: {self.created_at}, Корзина {self.id} для {self.user if self.user else 'Анонимного пользователя'}, Сумма заказа: {self.total_price},На когда: {self.data_to}"
+        return f"Корзина {self.id} для {self.user if self.user else 'Анонимного пользователя'}, Сумма заказа: {self.total_price},На когда: {self.data_to}"
 
 
 class BasketItem(models.Model):
@@ -71,5 +75,11 @@ class BasketItem(models.Model):
             total_price = 0
         return total_price
 
+    @property
+    def total_quantity(self):
+        if self.quantity is None:
+            return 0
+        return self.quantity
+
     def __str__(self):
-        return f"Товар: {self.product.name}, Кол-во: {self.quantity}, Цена: {self.total_price}"
+        return f"Товар: {self.product.name}, Кол-во: {self.total_quantity}, Цена: {self.total_price}"
