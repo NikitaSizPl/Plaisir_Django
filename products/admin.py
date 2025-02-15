@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Catigories, Product
+from basket.models import Basket
 
 # Register your models here.
 class CategoriesAdmin(admin.ModelAdmin):
@@ -15,3 +16,7 @@ class ProductAdmin(admin.ModelAdmin):
     prepopulated_fields = {'name': ('name',)}
     ordering = ('id',)
 admin.site.register(Product, ProductAdmin)
+
+class BasketAdmin(admin.TabularInline):
+    model = Basket
+    fields = None
