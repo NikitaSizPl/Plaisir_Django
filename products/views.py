@@ -17,7 +17,7 @@ def items_categor(request, cat_name):
     categor = Catigories.objects.get(name=cat_name)
     products = Product.objects.filter(categories__name=cat_name)
     context = {
-        'products' : products,
+        'products': products,
         'categor': categor
     }
     return render(request,
@@ -40,9 +40,15 @@ def product_id(request, product_id):
 def index(request):
     items = Product.objects.all()
     categor = Catigories.objects.all()
+    tort_all = Product.objects.filter(categories__name='torty')
+    macarons_all = Product.objects.filter(categories__name='macarons')
+    сroissants_all = Product.objects.filter(categories__name='сroissants')
     context = {
         'items': items,
-        'categor': categor
+        'categor': categor,
+        'tort_all': tort_all,
+        'macarons_all': macarons_all,
+        'сroissants_all': сroissants_all
     }
     return render(request,
                   'products/index.html',
