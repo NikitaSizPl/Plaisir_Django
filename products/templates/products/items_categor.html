@@ -7,14 +7,26 @@
 
 
 {% block content %}
-
-{% for product in products %}
-    <div class="items-list">
-        <img src="{% static 'media/no_images.png' %}" alt="My image" width="200" height="150">
-        <div class="items-info">
-            <h3><a href="{% url 'products:item_id' product.id %}">{{ product|capfirst }}</a></h3>
+<div class="block-content">
+    <div class="base">
+        <div class="contener-base">
+            {% for product in products %}
+            <div class="contener-item">
+                <div class="contener-images">
+                    <a href="{% url 'products:item_id' product.id %}" class="image">
+                        {% if product.image%}
+                        <img src="{{product.image.url}}" alt="My image" width="200" height="150">
+                        {% else %}
+                        <img src="{% static 'media/no_images.png' %}" alt="My image" width="200" height="150">
+                        {% endif %}
+                    </a>
+                </div>
+                <div class="contener-info-item" style="text-align: center">
+                    <h3><a href="{% url 'products:item_id' product.id %}">{{ product|capfirst }}</a></h3>
+                </div>
+             </div>
+            {% endfor %}
         </div>
-       <a href="{% url 'basket:add_to_basket' product.id %}">Добавить в корзину</a>
     </div>
-{% endfor %}
+</div>
 {% endblock %}
