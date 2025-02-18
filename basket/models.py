@@ -26,15 +26,15 @@ class Basket(models.Model):
     )
 
     def clear(self):
-        self.product.all().delete()
+        self.items.all().delete()
 
     @property
     def total_price(self):
-        return sum(item.total_price for item in self.product.all())
+        return sum(item.total_price for item in self.items.all())
 
     @property
     def total_quantity(self):
-        return sum(item.total_quantity for item in self.quantity.all())
+        return sum(item.total_quantity for item in self.items.all())
 
     class Meta:
         verbose_name = 'Корзина'
@@ -47,7 +47,7 @@ class Basket(models.Model):
 class BasketItem(models.Model):
     basket = models.ForeignKey(
         Basket,
-        related_name='product',
+        related_name='items',
         on_delete=models.CASCADE,
         verbose_name='Корзина'
     )
