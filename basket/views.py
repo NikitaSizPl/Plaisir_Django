@@ -1,4 +1,7 @@
+import json
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
+
 from basket.models import Basket, BasketItem
 from products.models import Product
 from django.conf import settings
@@ -67,6 +70,35 @@ def del_from_basket(request, product_id):
     if basket_item:
         basket_item.delete()
     return redirect('basket:basket')
+
+
+@csrf_exempt
+def update_basket(request):
+    if request.method == "POST":
+        try:
+            data = json.loads( request.body )
+            item_id = data.get("item_id")
+            quantity = int( data.get("quantity"))
+
+            print( f"📩 Пришли данные: item_id={item_id}, quantity={quantity}" )
+
+            basket_item = BasketItem.objects.get(id=item_id)
+            basket_item.quantity = quantity
+            basket_item.save()  # Здесь total_price пересчитается автоматически
+
+            basket = Basket.objects.get( id=basket_item.basket.id )
+
+            return JsonResponse( {
+                "success": True,
+                "item_total_price": basket_item.total_price,  # Теперь это @property
+                "basket_total_price": sum( item.total_price for item in basket.items.all() )
+            } )
+        except BasketItem.DoesNotExist:
+            return JsonResponse( {"success": False, "message": "Товар не найден"} )
+        except Exception as e:
+            return JsonResponse( {"success": False, "message": str( e )} )
+
+    return JsonResponse( {"success": False, "message": "Неверный метод запроса"} )
 
 
 def del_all(request):
