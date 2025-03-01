@@ -4,6 +4,10 @@ from django.db import models
 
 # Create your models here.
 class User(AbstractUser):
+    name = models.CharField(
+        max_length=50,
+        verbose_name='Имя покупателя'
+    )
     instagram = models.CharField(
         null=True,
         blank=True,
