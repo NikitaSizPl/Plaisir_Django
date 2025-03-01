@@ -12,8 +12,6 @@ class UserLoginForm(AuthenticationForm):
 
 class UserRegisterForm(UserCreationForm):
     username = forms.CharField(widget=forms.TextInput)
-    # instagram = forms.CharField(widget=forms.TextInput)
-    # phone = forms.CharField(widget=forms.TextInput)
     password1 = forms.CharField(widget=forms.PasswordInput)
     password2 = forms.CharField(widget=forms.PasswordInput)
     class Meta:
