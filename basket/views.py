@@ -12,10 +12,7 @@ def basket_base(request):
     # если пользователь авторизован
     if request.user.is_authenticated:
         # получаем корзину авторизованого пользователя
-        basket = Basket.objects.filter(user=request.user).first()
-        if not basket:
-            # создаем корзину для пользователя
-            basket = Basket.objects.create(user=request.user)
+        basket, create = Basket.objects.get_or_create(user=request.user)
     # если пользователь не авторизован
     else:
         # получаем корзину из сессии
@@ -26,7 +23,7 @@ def basket_base(request):
             request.session[settings.BASKET_SESSION_ID] = basket.id
         else:
             # получаем корзину если она создана
-            basket = Basket.objects.get(id=basket_id)
+            basket = Basket.objects.filter(id=basket_id).first()
     context = {
         'basket': basket,
         'basket_item': BasketItem.objects.filter(basket=basket),
@@ -38,15 +35,19 @@ def add_to_basket(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     # Для авторизованых пользователей
     if request.user.is_authenticated:
-        basket = Basket.objects.get(user=request.user)
+        basket, create = Basket.objects.get_or_create(user=request.user)
         basket_item = BasketItem.objects.filter(basket=basket, product=product).first()
     # Для анонимных пользователей
     else:
-        basket_id = request.session.get('basket_id')
-        basket = Basket.objects.get(id=basket_id)
+        # получаем корзину из сессии
+        basket_id = request.session.get(settings.BASKET_SESSION_ID)
         if not basket_id:
+            # создаем корзину для сессии
             basket = Basket.objects.create()
-            request.session['basket_id'] = basket.id
+            request.session[settings.BASKET_SESSION_ID] = basket.id
+        else:
+            # получаем корзину если она создана
+            basket = Basket.objects.get(id=basket_id)
         basket_item = BasketItem.objects.filter(basket=basket, product=product).first()
 
     if basket_item:
@@ -72,7 +73,7 @@ def del_from_basket(request, product_id):
     return redirect('basket:basket')
 
 
-@csrf_exempt
+# @csrf_exempt
 def update_basket(request):
     if request.method == "POST":
         try:
@@ -80,7 +81,7 @@ def update_basket(request):
             item_id = data.get("item_id")
             quantity = int( data.get("quantity"))
 
-            print( f"📩 Пришли данные: item_id={item_id}, quantity={quantity}" )
+            print( f"📩 Пришли данные: item_id={item_id}, quantity={quantity}")
 
             basket_item = BasketItem.objects.get(id=item_id)
             basket_item.quantity = quantity
@@ -94,11 +95,11 @@ def update_basket(request):
                 "basket_total_price": sum( item.total_price for item in basket.items.all() )
             } )
         except BasketItem.DoesNotExist:
-            return JsonResponse( {"success": False, "message": "Товар не найден"} )
+            return JsonResponse({"success": False, "message": "Товар не найден"} )
         except Exception as e:
-            return JsonResponse( {"success": False, "message": str( e )} )
+            return JsonResponse({"success": False, "message": str( e )} )
 
-    return JsonResponse( {"success": False, "message": "Неверный метод запроса"} )
+    return JsonResponse({"success": False, "message": "Неверный метод запроса"})
 
 
 def del_all(request):
