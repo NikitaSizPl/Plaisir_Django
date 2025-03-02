@@ -19,12 +19,6 @@ class Basket(models.Model):
         verbose_name='Дата создания'
     )
 
-    data_to = models.DateField(
-        null=True,
-        blank=True,
-        verbose_name='На когда делается заказ'
-    )
-
     def clear(self):
         self.items.all().delete()
 
